@@ -18,8 +18,8 @@ Resources:
               Resource: '*'
       Environment:
         Variables:
-          USER_POOL_ID: "us-east-1_lLiNIC87U"
-          CLIENT_ID: "67v6o5suqcos03dd1pev1pb7bj"
+          USER_POOL_ID: "us-east-1_Yyx688g3c"
+          CLIENT_ID: "4o8r1kmittsfv5oj773o6fal8n"
       Events:
         ApiGatewayEvent:
           Type: Api
