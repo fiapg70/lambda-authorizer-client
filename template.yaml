@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Resources:
+  CognitoAuthLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: ./
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - 'cognito-idp:InitiateAuth'
+                - 'cognito-idp:AdminInitiateAuth'
+                - 'cognito-idp:RespondToAuthChallenge'
+              Resource: '*'
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_lLiNIC87U"
+          CLIENT_ID: "67v6o5suqcos03dd1pev1pb7bj"
+      Events:
+        ApiGatewayEvent:
+          Type: Api
+          Properties:
+            Path: /auth
+            Method: POST
+            RestApiId: !Ref ApiGatewayApi
+    Metadata:
+        BuildMethod: python3.8
+        RequirementsFile: requirements.txt
+        
+  ApiGatewayApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: 'dev'  # Defina o estágio aqui
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: 'Cognito Auth API'
+        paths:
+          /auth:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CognitoAuthLambdaFunction.Arn}/invocations
+                passthroughBehavior: 'when_no_match'
+                httpMethod: 'POST'
+                type: 'aws_proxy'
+
+  UserPool:
+    Type: 'AWS::Cognito::UserPool'
+    Properties:
+      UserPoolName: MyUserPool
+      UsernameAttributes:
+        - email
+
+  UserPoolClient:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: MyUserPoolClient
+      UserPoolId: !Ref UserPool
+
+Outputs:
+  CognitoAuthLambdaFunctionArn:
+    Value: !GetAtt CognitoAuthLambdaFunction.Arn
+  ApiGatewayInvokeURL:
+    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/dev'
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
