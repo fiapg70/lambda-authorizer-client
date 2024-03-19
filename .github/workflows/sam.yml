@@ -21,6 +21,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1  # substitua pela região correta
 
+    - name: Install AWS SAM CLI
+      run: |
+        sudo apt update
+        sudo apt install -y awscli
+        sudo apt install -y python3-pip
+        sudo pip3 install aws-sam-cli
+
     - name: Build SAM application
       run: sam build
 
