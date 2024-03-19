@@ -22,13 +22,13 @@ def lambda_handler(event, context):
         client = boto3.client('cognito-idp')
         params = {
             'AuthFlow': 'USER_PASSWORD_AUTH',
-            'ClientId': '67v6o5suqcos03dd1pev1pb7bj',
+            'ClientId': '4o8r1kmittsfv5oj773o6fal8n',
             #'UserPoolId': 'us-east-1_lLiNIC87U',
             'AuthParameters': {
                 'USERNAME': cpf,
                 'PASSWORD': senha,
-                'USER_POOL_ID': 'us-east-1_lLiNIC87U',  # Adicione aqui o UserPoolId
-                'SECRET_HASH': calculate_secret_hash(cpf, '67v6o5suqcos03dd1pev1pb7bj', '1o4t8vbak8i6fq1b34fs2a8gdl2t9pu6kcf79qkn833qe72qhp2q')
+                'USER_POOL_ID': 'us-east-1_Yyx688g3c',  # Adicione aqui o UserPoolId
+                'SECRET_HASH': calculate_secret_hash(cpf, '4o8r1kmittsfv5oj773o6fal8n', '1i2btmd5o95v1jn4aich0cb1kru73scattvnq6m04c424p3dv6su')
             }
         }
         response = client.initiate_auth(**params)
