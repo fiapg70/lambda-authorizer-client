@@ -21,15 +21,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1  # substitua pela região correta
 
-    - name: Install AWS SAM CLI
+    - name: Build and deploy SAM application
       run: |
-        sudo apt update
-        sudo apt install -y awscli
-        sudo apt install -y python3-pip
-        sudo pip3 install aws-sam-cli
-
-    - name: Build SAM application
-      run: sam build
-
-    - name: Deploy SAM application
-      run: sam deploy --stack-name lambda-authorizer-client-stack --no-confirm-changeset --no-fail-on-empty-changeset
+        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it amazon/aws-sam-cli-build-image-python3.8 sam build
+        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it amazon/aws-sam-cli-build-image-python3.8 sam deploy --stack-name lambda-authorizer-client-stack --no-confirm-changeset --no-fail-on-empty-changeset
