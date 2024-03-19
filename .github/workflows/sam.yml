@@ -23,5 +23,5 @@ jobs:
 
     - name: Build and deploy SAM application
       run: |
-        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it amazon/aws-sam-cli-build-image-python3.8 sam build
-        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it amazon/aws-sam-cli-build-image-python3.8 sam deploy --stack-name lambda-authorizer-client-stack --no-confirm-changeset --no-fail-on-empty-changeset
+        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-sam-cli-build-image-python3.8 sam build
+        docker run -v $(pwd):/var/task -v ~/.aws:/root/.aws -e AWS_DEFAULT_REGION -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-sam-cli-build-image-python3.8 sam deploy --stack-name lambda-authorizer-client-stack --no-confirm-changeset --no-fail-on-empty-changeset
