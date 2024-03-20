@@ -35,14 +35,14 @@ def lambda_handler(event, context):
         token = response['AuthenticationResult']['AccessToken']
         
         # Chamada à API REST externa
-        api_url = 'URL_DA_SUA_API_REST_EXTERN'
+        api_url = 'http://a9de6c08bf02c4f078e55308be655aae-1798748614.us-east-1.elb.amazonaws.com:9991/api/v1/restaurants'
         headers = {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
         payload = {
-            'cpf': cpf,
-            'senha': senha
+           "name": "Seven Food",
+           "cnpj": "02.365.347/0001-63"
         }
         response = requests.post(api_url, headers=headers, json=payload)
         
