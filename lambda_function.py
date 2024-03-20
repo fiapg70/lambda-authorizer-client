@@ -33,6 +33,9 @@ def lambda_handler(event, context):
         }
         response = client.initiate_auth(**params)
         token = response['AuthenticationResult']['AccessToken']
+
+        # Imprimir o token no CloudWatch
+        print("Token:", token)
         
         # Chamada à API REST externa
         api_url = 'http://a9de6c08bf02c4f078e55308be655aae-1798748614.us-east-1.elb.amazonaws.com:9991/api/v1/restaurants'
