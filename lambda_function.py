@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             'Content-Type': 'application/json'
         }
         payload = {
-           "name": "Seven Food",
+           "name": "Seven Food 765",
            "cnpj": "02.365.347/0001-63"
         }
         response = requests.post(api_url, headers=headers, json=payload)
