@@ -2,6 +2,10 @@ import boto3
 import json
 
 def lambda_handler(event, context):
+    body = json.loads(event['body'])
+        if 'cpf' not in body or 'senha' not in body:
+            raise ValueError('CPF e/ou senha ausentes no corpo da requisição')
+            
     cpf = body['cpf']
     senha = body['senha']
     # Substitua esses valores pelos seus próprios
