@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
-      CodeUri: ./
+      CodeUri: s3://lambda-authorizer-client-s3/lambda-authorizer-client.zip
       Policies:
         - Statement:
             - Effect: Allow
