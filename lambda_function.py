@@ -22,60 +22,35 @@ def lambda_handler(event, context):
         client = boto3.client('cognito-idp')
         params = {
             'AuthFlow': 'USER_PASSWORD_AUTH',
-            'ClientId': '4o8r1kmittsfv5oj773o6fal8n',
+            'ClientId': '67v6o5suqcos03dd1pev1pb7bj',
             #'UserPoolId': 'us-east-1_lLiNIC87U',
             'AuthParameters': {
                 'USERNAME': cpf,
                 'PASSWORD': senha,
-                'USER_POOL_ID': 'us-east-1_Yyx688g3c',  # Adicione aqui o UserPoolId
-                'SECRET_HASH': calculate_secret_hash(cpf, '4o8r1kmittsfv5oj773o6fal8n', '1i2btmd5o95v1jn4aich0cb1kru73scattvnq6m04c424p3dv6su')
+                'USER_POOL_ID': 'us-east-1_lLiNIC87U',  # Adicione aqui o UserPoolId
+                'SECRET_HASH': calculate_secret_hash(cpf, '67v6o5suqcos03dd1pev1pb7bj', '1o4t8vbak8i6fq1b34fs2a8gdl2t9pu6kcf79qkn833qe72qhp2q')
             }
         }
         response = client.initiate_auth(**params)
         token = response['AuthenticationResult']['AccessToken']
-
+        
         # Imprimir o token no CloudWatch
         print("Token:", token)
         
-        # Chamada à API REST externa
-        #api_url = 'http://a9de6c08bf02c4f078e55308be655aae-1798748614.us-east-1.elb.amazonaws.com:9991/api/v1/restaurants'
-        #headers = {
-        #    'Authorization': 'Bearer ' + token,
-        #    'Content-Type': 'application/json'
-        #}
-        #payload = {
-        #   "name": "Seven Food 765",
-        #   "cnpj": "02.365.347/0001-63"
-        #}
-        #response = requests.post(api_url, headers=headers, json=payload)
-        
-        # Verificar o status da resposta da API externa
-        #if response.ok:
-        #    return {
-        #        'statusCode': 200,
-        #        'body': response.json()
-        #    }
-        #else:
-        #    return {
-        #        'statusCode': response.status_code,
-        #        'body': json.dumps({
-        #            'error': response.text
-        #        })
-        #    }
-    #except ValueError as ve:
-     #   return {
-      #      'statusCode': 400,
-      #      'body': json.dumps({
-      #          'error': str(ve)
-      #      })
-      #  }
-    #except Exception as e:
-     #   return {
-      #      'statusCode': 500,
-       #     'body': json.dumps({
-        #        'error': str(e)
-         #   })
-        #}
+    except ValueError as ve:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({
+                'error': str(ve)
+            })
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error': str(e)
+            })
+        }
 
 def calculate_secret_hash(username, client_id, client_secret):
     message = username + client_id
