@@ -38,44 +38,44 @@ def lambda_handler(event, context):
         print("Token:", token)
         
         # Chamada à API REST externa
-        api_url = 'http://a9de6c08bf02c4f078e55308be655aae-1798748614.us-east-1.elb.amazonaws.com:9991/api/v1/restaurants'
-        headers = {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        }
-        payload = {
-           "name": "Seven Food 765",
-           "cnpj": "02.365.347/0001-63"
-        }
-        response = requests.post(api_url, headers=headers, json=payload)
+        #api_url = 'http://a9de6c08bf02c4f078e55308be655aae-1798748614.us-east-1.elb.amazonaws.com:9991/api/v1/restaurants'
+        #headers = {
+        #    'Authorization': 'Bearer ' + token,
+        #    'Content-Type': 'application/json'
+        #}
+        #payload = {
+        #   "name": "Seven Food 765",
+        #   "cnpj": "02.365.347/0001-63"
+        #}
+        #response = requests.post(api_url, headers=headers, json=payload)
         
         # Verificar o status da resposta da API externa
-        if response.ok:
-            return {
-                'statusCode': 200,
-                'body': response.json()
-            }
-        else:
-            return {
-                'statusCode': response.status_code,
-                'body': json.dumps({
-                    'error': response.text
-                })
-            }
-    except ValueError as ve:
-        return {
-            'statusCode': 400,
-            'body': json.dumps({
-                'error': str(ve)
-            })
-        }
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({
-                'error': str(e)
-            })
-        }
+        #if response.ok:
+        #    return {
+        #        'statusCode': 200,
+        #        'body': response.json()
+        #    }
+        #else:
+        #    return {
+        #        'statusCode': response.status_code,
+        #        'body': json.dumps({
+        #            'error': response.text
+        #        })
+        #    }
+    #except ValueError as ve:
+     #   return {
+      #      'statusCode': 400,
+      #      'body': json.dumps({
+      #          'error': str(ve)
+      #      })
+      #  }
+    #except Exception as e:
+     #   return {
+      #      'statusCode': 500,
+       #     'body': json.dumps({
+        #        'error': str(e)
+         #   })
+        #}
 
 def calculate_secret_hash(username, client_id, client_secret):
     message = username + client_id
