@@ -1,48 +1,36 @@
-import boto3
+import requests
 import json
 
 def lambda_handler(event, context):
-    try:
-        body = json.loads(event['body'])
-        if 'cpf' not in body or 'senha' not in body:
-            raise ValueError('CPF e/ou senha ausentes no corpo da requisição')
+    USER_POOL_ID = 'us-east-1_lLiNIC87U'
+    CLIENT_ID = '67v6o5suqcos03dd1pev1pb7bj'
 
-        cpf = body['cpf']
-        senha = body['senha']
-        # Substitua esses valores pelos seus próprios
-        USER_POOL_ID = 'us-east-1_lLiNIC87U'
-        CLIENT_ID = '67v6o5suqcos03dd1pev1pb7bj'
-        USERNAME = cpf
-        PASSWORD = senha
+    auth_url = f'https://cognito-idp.us-east-1.amazonaws.com/{USER_POOL_ID}/oauth2/token'
 
-        # Inicializa o cliente Cognito
-        client = boto3.client('cognito-idp')
+    payload = {
+        'grant_type': 'password',
+        'client_id': 67v6o5suqcos03dd1pev1pb7bj,
+        'username': 'rogerio.fontes@hotmail.com',
+        'password': "@UrXMcHTKWEqAY6^W$"
+    }
 
-        # Autentica o usuário no Amazon Cognito
-        response = client.initiate_auth(
-            AuthFlow='USER_PASSWORD_AUTH',
-            AuthParameters={
-                'USERNAME': USERNAME,
-                'PASSWORD': PASSWORD
-            },
-            ClientId="67v6o5suqcos03dd1pev1pb7bj"
-        )
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
 
-        # Retorna o token de acesso se a autenticação for bem-sucedida
-        if 'AuthenticationResult' in response:
-            access_token = response['AuthenticationResult']['AccessToken']
-            print("Access Token:", access_token)  # Imprime o token de acesso
-            return {
-                'statusCode': 200,
-                'body': json.dumps({'access_token': access_token})
-            }
-        else:
-            return {
-                'statusCode': 401,
-                'body': json.dumps({'message': 'Falha na autenticação'})
-            }
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error_message': str(e)})
-        }
+    response = requests.post(auth_url, data=payload, headers=headers)
+
+    if response.status_code == 200:
+        return json.loads(response.text)['access_token']
+    else:
+        print("Erro:", response.text)
+        return None
+
+# Exemplo de uso
+username = 'seu_nome_de_usuario'
+password = 'sua_senha'
+access_token = get_access_token(username, password)
+if access_token:
+    print("Token de acesso obtido:", access_token)
+else:
+    print("Falha ao obter o token de acesso.")
