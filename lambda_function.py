@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     # Substitua esses valores pelos seus próprios
     USER_POOL_ID = 'us-east-1_lLiNIC87U'
     CLIENT_ID = '67v6o5suqcos03dd1pev1pb7bj'
-    USERNAME = ' cpf,
+    USERNAME = cpf,
     PASSWORD = senha,
 
     # Inicializa o cliente Cognito
